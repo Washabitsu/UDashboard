@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@import "@fontsource-variable/schibsted-grotesk";
+@import "@fontsource-variable/jetbrains-mono";
+
+/*
+  Design tokens. The palette comes from what the product does: Isolation Forest models that find the
+  one record that doesn't belong. Forest green carries the interface, amber is kept for that one
+  outlier - the mark in the logo and anything that needs a second look.
+*/
+:root {
+  --mist: #f4f6f4;       /* page background */
+  --paper: #ffffff;      /* panels, tables, inputs */
+  --ink: #17231e;        /* text */
+  --slate: #5c6a64;      /* secondary text */
+  --line: #dce2de;       /* borders */
+  --wash: #ebefec;       /* hover and quiet fills */
+  --forest: #1e5b47;     /* primary actions, links, focus */
+  --forest-deep: #12332a;/* sidebar */
+  --signal: #e9a100;     /* the outlier */
+  --danger: #b3261e;
+
+  --radius: 0.375rem;
+}
+
+@theme inline {
+  --font-sans: 'Schibsted Grotesk Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --color-background: var(--mist);
+  --color-foreground: var(--ink);
+  --color-card: var(--paper);
+  --color-card-foreground: var(--ink);
+  --color-primary: var(--forest);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--wash);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--wash);
+  --color-muted-foreground: var(--slate);
+  --color-accent: var(--wash);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--danger);
+  --color-border: var(--line);
+  --color-input: #c9d2cd;
+  --color-ring: var(--forest);
+  --color-sidebar: var(--forest-deep);
+  --color-sidebar-foreground: #dde8e2;
+  --color-sidebar-accent: #1d4739;
+  --color-signal: var(--signal);
+
+  --radius-sm: calc(var(--radius) * 0.67);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.5);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply m-0 bg-background text-foreground antialiased;
+  }
+
+  /* One visible focus style for everything that can be reached with the keyboard */
+  :focus-visible {
+    outline: 2px solid var(--forest);
+    outline-offset: 2px;
+  }
+
+  /* The forest outline can't be seen on the dark sidebar */
+  [data-surface="dark"] :focus-visible {
+    outline-color: #ffffff;
+  }
+
+  h1, h2, h3 {
+    letter-spacing: -0.01em;
+  }
+
+  code, pre, .font-mono {
+    font-feature-settings: "liga" 0;
+  }
+}
+
+/* The one moving thing in the app: the ring around the outlier on the login page pulses twice, then rests */
+@keyframes outlier-ping {
+  from {
+    r: 6px;
+    opacity: 0.9;
+  }
+  to {
+    r: 26px;
+    opacity: 0;
+  }
+}
+
+.outlier-ring {
+  opacity: 0;
+  animation: outlier-ping 1.8s ease-out 0.5s 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

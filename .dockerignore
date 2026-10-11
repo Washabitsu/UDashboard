@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.git/
+*.local
+
+# Secrets never go into an image
+.env
+.env.*
